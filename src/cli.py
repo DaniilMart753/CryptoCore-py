@@ -4,10 +4,21 @@ CLI parser for CryptoCore.
 Handles command-line arguments for encryption/decryption.
 """
 
-import argparse
 import sys
-from file_io import read_file, write_file
-from modes.ecb import encrypt_ecb, decrypt_ecb
+import os
+import argparse
+
+# Добавляем путь к корневой папке проекта
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.file_io import read_file, write_file
+from src.modes import (
+    encrypt_ecb, decrypt_ecb,
+    encrypt_cbc, decrypt_cbc,
+    encrypt_cfb, decrypt_cfb,
+    encrypt_ofb, decrypt_ofb,
+    encrypt_ctr, decrypt_ctr
+)
 
 def parse_args():
     """Parse and validate command-line arguments."""
@@ -17,10 +28,11 @@ def parse_args():
     )
     
     parser.add_argument('--algorithm', required=True, choices=['aes'],
-                        help='Algorithm to use (only aes for now)')
+                        help='Algorithm to use')
     
-    parser.add_argument('--mode', required=True, choices=['ecb'],
-                        help='Mode of operation (only ecb for now)')
+    parser.add_argument('--mode', required=True, 
+                        choices=['ecb', 'cbc', 'cfb', 'ofb', 'ctr'],
+                        help='Mode of operation')
     
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--encrypt', action='store_true',
@@ -57,6 +69,18 @@ def parse_args():
     
     return args
 
+def get_mode_function(mode: str, operation: str):
+    """Return appropriate encryption/decryption function for the mode."""
+    modes = {
+        'ecb': (encrypt_ecb, decrypt_ecb),
+        'cbc': (encrypt_cbc, decrypt_cbc),
+        'cfb': (encrypt_cfb, decrypt_cfb),
+        'ofb': (encrypt_ofb, decrypt_ofb),
+        'ctr': (encrypt_ctr, decrypt_ctr),
+    }
+    enc_func, dec_func = modes[mode]
+    return enc_func if operation == 'encrypt' else dec_func
+
 def main():
     """Main CLI entry point."""
     args = parse_args()
@@ -69,13 +93,12 @@ def main():
         data = read_file(args.input)
         print(f"Read {len(data)} bytes from {args.input}")
         
+        # Получаем нужную функцию
+        func = get_mode_function(args.mode, 'encrypt' if args.encrypt else 'decrypt')
+        
         # Выполняем операцию
-        if args.encrypt:
-            print("Encrypting...")
-            result = encrypt_ecb(key, data)
-        else:
-            print("Decrypting...")
-            result = decrypt_ecb(key, data)
+        print(f"{'Encrypting' if args.encrypt else 'Decrypting'} in {args.mode.upper()} mode...")
+        result = func(key, data)
         
         # Записываем результат
         write_file(args.output, result)
