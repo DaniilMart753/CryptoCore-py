@@ -3,7 +3,7 @@ ECB mode implementation using AES from pycryptodome.
 """
 
 from Crypto.Cipher import AES
-from file_io import pkcs7_pad, pkcs7_unpad  # убрали точки
+from src.file_io import pkcs7_pad, pkcs7_unpad
 
 def encrypt_ecb(key: bytes, plaintext: bytes) -> bytes:
     """

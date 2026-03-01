@@ -5,3 +5,4 @@ from .block_modes import (
     encrypt_ofb, decrypt_ofb,
     encrypt_ctr, decrypt_ctr
 )
+from .aead import encrypt_then_mac, decrypt_verify, derive_keys
