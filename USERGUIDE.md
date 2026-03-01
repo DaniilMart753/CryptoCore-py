@@ -4,8 +4,11 @@
 git clone https://github.com/DaniilMart753/CryptoCore-py.git
 
 cd CryptoCore-py
+
 python3 -m venv venv
+
 source venv/bin/activate
+
 pip install pycryptodome
 
 ## Шифрование с ключом
@@ -28,5 +31,7 @@ python -c "from src.kdf.pbkdf2 import pbkdf2_hmac_sha256; print(pbkdf2_hmac_sha2
 
 ## Тестыpython test_hmac_full.py
 python test_aead.py
+
 python test_pbkdf2.py
+
 python run_all_tests.py
