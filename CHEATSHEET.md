@@ -34,6 +34,7 @@ python src/cli.py --algorithm aes --mode cbc --decrypt --key 0011223344556677889
 
 ## Проверка расшифровки
 cat test_decrypted.txt
+
 diff test.txt test_decrypted.txt
 
 ## Шифрование без ключа (генерация ключа)
