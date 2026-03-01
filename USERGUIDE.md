@@ -2,6 +2,7 @@
 
 ## Установка
 git clone https://github.com/DaniilMart753/CryptoCore-py.git
+
 cd CryptoCore-py
 python3 -m venv venv
 source venv/bin/activate
