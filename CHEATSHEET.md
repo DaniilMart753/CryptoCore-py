@@ -2,10 +2,12 @@
 
 ## Клонирование
 git clone https://github.com/DaniilMart753/CryptoCore-py.git
+
 cd CryptoCore-py
 
 ## Виртуальное окружение
 python3 -m venv venv
+
 source venv/bin/activate
 
 ## Установка библиотеки
@@ -48,11 +50,16 @@ python -c "from src.kdf.pbkdf2 import pbkdf2_hmac_sha256; print(pbkdf2_hmac_sha2
 
 ## Просмотр документации
 cat README.md
+
 cat USERGUIDE.md
+
 cat API.md
 
 ## Если что-то пошло не так (очистка и переустановка)
 rm -rf venv
+
 python3 -m venv venv
+
 source venv/bin/activate
+
 pip install pycryptodome
