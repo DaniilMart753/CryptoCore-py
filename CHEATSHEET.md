@@ -18,7 +18,7 @@ echo "Текст тестового файла" > test.txt
 
 ## Проверка структуры (что должно быть в папке)
 ls -la
-#### Должны быть: src/, README.md, USERGUIDE.md, test_*.py
+`Должны быть: src/, README.md, USERGUIDE.md, test_*.py`
 
 
 ## Запуск всех тестов
