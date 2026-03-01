@@ -14,7 +14,7 @@ source venv/bin/activate
 pip install pycryptodome
 
 ## Создание тестового файла
-echo "Моя курсовая работа" > test.txt
+echo "Текст тестового файла" > test.txt
 
 ## Проверка структуры (что должно быть в папке)
 ls -la
