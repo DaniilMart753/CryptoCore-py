@@ -2,6 +2,7 @@
 """
 CLI parser for CryptoCore.
 Handles command-line arguments for encryption/decryption.
+Sprint 3: Added CSPRNG and automatic key generation.
 """
 
 import sys
@@ -12,6 +13,7 @@ import argparse
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.file_io import read_file, write_file
+from src.csprng import generate_key
 from src.modes import (
     encrypt_ecb, decrypt_ecb,
     encrypt_cbc, decrypt_cbc,
@@ -40,8 +42,8 @@ def parse_args():
     group.add_argument('--decrypt', action='store_true',
                        help='Decrypt the input file')
     
-    parser.add_argument('--key', required=True,
-                        help='Encryption key in hexadecimal (32 chars for 16 bytes)')
+    parser.add_argument('--key', required=False,
+                        help='Encryption key in hexadecimal (32 chars for 16 bytes). If not provided for encryption, a random key will be generated.')
     
     parser.add_argument('--input', required=True,
                         help='Input file path')
@@ -51,14 +53,14 @@ def parse_args():
     
     args = parser.parse_args()
     
-    # Валидация ключа
-    if len(args.key) != 32:
-        parser.error(f"Key must be 32 hex chars (16 bytes), got {len(args.key)}")
-    
-    try:
-        bytes.fromhex(args.key)
-    except ValueError:
-        parser.error("Key must be valid hexadecimal")
+    # Валидация ключа (только если он предоставлен)
+    if args.key:
+        if len(args.key) != 32:
+            parser.error(f"Key must be 32 hex chars (16 bytes), got {len(args.key)}")
+        try:
+            bytes.fromhex(args.key)
+        except ValueError:
+            parser.error("Key must be valid hexadecimal")
     
     # Стандартное имя выходного файла
     if not args.output:
@@ -85,8 +87,19 @@ def main():
     """Main CLI entry point."""
     args = parse_args()
     
-    # Конвертируем ключ из hex в байты
-    key = bytes.fromhex(args.key)
+    # Работа с ключом
+    if args.key:
+        key = bytes.fromhex(args.key)
+        print(f"Using provided key: {args.key}")
+    else:
+        if args.decrypt:
+            print("Error: --key is required for decryption", file=sys.stderr)
+            sys.exit(1)
+        # Генерируем случайный ключ
+        key = generate_key()
+        key_hex = key.hex()
+        print(f"\n[INFO] Generated random key: {key_hex}")
+        print("[INFO] Save this key! It will NOT be stored anywhere.\n")
     
     try:
         # Читаем входной файл
