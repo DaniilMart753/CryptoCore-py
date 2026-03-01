@@ -20,6 +20,7 @@ echo "Текст тестового файла" > test.txt
 ls -la
 #### Должны быть: src/, README.md, USERGUIDE.md, test_*.py
 
+
 ## Запуск всех тестов
 python run_all_tests.py
 
