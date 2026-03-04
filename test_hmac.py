@@ -11,7 +11,7 @@ test_cases = [
     {
         'key': bytes.fromhex('0b' * 20),  # 20 bytes of 0x0b
         'data': b'Hi There',
-        'expected': 'b0344c61d8db38535ca8afceaf0bf12b881dc20c9833da726e9376c2e32cff7'
+        'expected': 'b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7'
     },
     # Test Case 2
     {

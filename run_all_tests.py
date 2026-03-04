@@ -4,7 +4,7 @@ import subprocess
 print("Запуск всех тестов...")
 
 tests = [
-    ("HMAC", "python test_hmac_full.py"),
+    ("HMAC", "python test_hmac.py"),
     ("AEAD", "python test_aead.py"),
     ("PBKDF2", "python test_pbkdf2.py"),
 ]
